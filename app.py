@@ -3,7 +3,7 @@ import google.generativeai as genai
 import json
 
 # Page Setup
-st.set_page_config(page_title="RBSN Strategy Hub", page_icon="🎓", layout="centered")
+st.set_page_config(page_title="Mmuta Quiz Game", page_icon="💡", layout="centered")
 
 # Custom Styling (Dark Blue & Chartreuse Theme)
 st.markdown("""
@@ -25,17 +25,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🎓 RBSN Revision & Case Study Hub")
-st.caption("Strategic Communications, Brand Strategy & Marketing Revision Engine")
+# Main Title Header
+st.title("💡 Mmuta Quiz Game")
+st.caption("Learn, Master & Apply: Strategic Communications, Marketing & Brand Strategy")
 
-# Sidebar
+# Sidebar Setup
 with st.sidebar:
     st.header("⚙️ Game Setup")
     api_key = st.text_input("Enter Google AI Studio API Key", type="password")
     uploaded_file = st.file_uploader("Upload Lecture Slides / Notes (PDF or TXT)", type=["pdf", "txt"])
     
     st.write("---")
-    mode = st.radio("Select Mode", ["10-Question Quiz", "Case Study Simulator"])
+    mode = st.radio("Select Mode", ["Quiz Sprint", "Case Study Simulator"])
     
     if st.button("Reset / New Session"):
         st.session_state.clear()
@@ -132,11 +133,11 @@ def evaluate_case_solution(scenario, student_response, api_key):
     return response.text
 
 # ----------------- MODE 1: QUIZ SPRINT -----------------
-if mode == "10-Question Quiz":
+if mode == "Quiz Sprint":
     if not uploaded_file or not api_key:
         st.info("👈 Enter your Google AI Studio API Key and upload your notes in the sidebar to start!")
     elif not st.session_state.questions:
-        if st.button(f"🚀 Start {st.session_state.num_questions}-Question Quiz Sprint"):
+        if st.button(f"🚀 Start {st.session_state.num_questions}-Question Mmuta Sprint"):
             with st.spinner("Building your custom quiz..."):
                 try:
                     text = extract_text(uploaded_file)
