@@ -3,54 +3,54 @@ import google.generativeai as genai
 import json
 
 # Page Setup
-st.set_page_config(page_title="Mmuta Quiz Game.", page_icon="🟢", layout="centered")
+st.set_page_config(page_title="Mmuta Quiz Game", page_icon="💡", layout="centered")
 
-# Custom Brand Styling (Ink, Paper, Green Accent, Space Grotesk & EB Garamond)
+# Custom Styling (Plus Jakarta Sans & Space Grotesk, preserving Streamlit Material Icons)
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@600;700&display=swap');
 
-    /* Global Theme & Canvas */
-    html, body, .stApp {
-        background-color: #0B0F0D !important;
-        color: #F2F1EA !important;
-        font-family: 'EB Garamond', Georgia, serif;
+    /* Global Base Canvas */
+    .stApp {
+        background-color: #0B0F0D;
+        color: #F2F1EA;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     }
-    
-    /* Typography Overrides */
-    h1, h2, h3, h4, h5, h6, .stTitle {
+
+    /* Headings & Titles */
+    h1, h2, h3, h4, .stTitle {
         font-family: 'Space Grotesk', system-ui, sans-serif !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         color: #F2F1EA !important;
         letter-spacing: -0.02em !important;
     }
 
-    p, li, label, .stMarkdown {
-        font-family: 'EB Garamond', Georgia, serif;
+    /* Body Text & Markdown */
+    p, li, div.stMarkdown, div[data-testid="stMarkdownContainer"] > p {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
         color: #F2F1EA;
-        font-size: 1.05rem;
     }
 
-    /* Muted Text */
-    .stCaption, .muted-text {
+    /* Subtitles & Captions */
+    .stCaption, div[data-testid="stCaptionContainer"] {
         color: #A7B0A9 !important;
-        font-family: 'Space Grotesk', sans-serif !important;
-        font-size: 0.85rem !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        font-size: 0.95rem !important;
+        margin-top: -0.5rem !important;
     }
 
-    /* Primary Buttons & Choice Targets */
+    /* Primary Buttons & Interactive Options */
     .stButton > button {
         width: 100%;
-        border-radius: 14px;
-        padding: 0.85rem 1.4rem;
+        border-radius: 12px;
+        padding: 0.75rem 1.25rem;
         background-color: #5FBF87 !important;
         color: #06110B !important;
-        font-family: 'Space Grotesk', sans-serif !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
         font-weight: 600 !important;
-        font-size: 1rem !important;
-        border: 1.5px solid transparent !important;
-        transition: background-color 0.18s ease, color 0.18s ease, transform 0.06s ease;
-        box-shadow: none !important;
+        font-size: 0.98rem !important;
+        border: 1px solid transparent !important;
+        transition: all 0.15s ease-in-out;
     }
 
     .stButton > button:hover {
@@ -59,57 +59,50 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
-    .stButton > button:active {
-        transform: translateY(1px);
-    }
-
     .stButton > button:disabled {
         background-color: #161E1A !important;
         color: #8B948D !important;
-        border-color: rgba(255, 255, 255, 0.06) !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
     }
 
     /* Sidebar Styling */
     section[data-testid="stSidebar"] {
         background-color: #111714 !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
-    }
-    
-    section[data-testid="stSidebar"] * {
-        font-family: 'Space Grotesk', sans-serif !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
 
-    /* Text Area & Input Styling */
+    /* Input Fields & Text Areas */
     .stTextArea textarea, .stTextInput input {
-        background-color: #111714 !important;
+        background-color: #161E1A !important;
         color: #F2F1EA !important;
-        border: 1px solid rgba(255, 255, 255, 0.10) !important;
-        border-radius: 14px !important;
-        font-family: 'EB Garamond', serif !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 10px !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
     .stTextArea textarea:focus, .stTextInput input:focus {
         border-color: #5FBF87 !important;
-        box-shadow: none !important;
+        box-shadow: 0 0 0 1px #5FBF87 !important;
     }
 
     /* Progress Bar */
     .stProgress > div > div > div > div {
         background-color: #5FBF87 !important;
     }
-    
-    /* Alert / Status Boxes */
-    div[data-baseweb="notification"] {
-        border-radius: 14px !important;
-        background-color: #111714 !important;
+
+    /* Status Notifications / Info Alerts */
+    div[data-baseweb="notification"], div[data-testid="stNotification"] {
+        border-radius: 12px !important;
+        background-color: #161E1A !important;
+        color: #F2F1EA !important;
         border: 1px solid rgba(255, 255, 255, 0.10) !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Main Title Header (Brand Wordmark Style)
-st.title("Mmuta Quiz Game.")
-st.caption("Strategy. Stories. Impact.")
+# Main Header & Updated Caption
+st.title("Mmuta Quiz Game")
+st.caption("Learn, Master & Apply Anything!")
 
 # Sidebar Setup
 with st.sidebar:
